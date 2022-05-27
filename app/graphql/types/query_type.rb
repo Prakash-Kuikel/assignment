@@ -7,12 +7,12 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
-    field :user, Types::UserType, null: true, description: "Display user details" do
+    field :show_user, Types::UserType, null: true, description: "Display user details" do
       argument :id, ID, required: true
     end
-    def user(id:)
+    def show_user(id:)
       User.find(id)
     end
-
+    
   end
 end
