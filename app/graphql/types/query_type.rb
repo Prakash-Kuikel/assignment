@@ -13,6 +13,18 @@ module Types
     def show_user(id:)
       User.find(id)
     end
+
+
+    field :login, String, null:true do
+      argument :email, String, required: true
+      argument :password, String, required: true
+    end
+    def login(email:, password:)
+      user = User.where(email: email).first
+      if user&.valid_password?(password)
+        return user.authentication_token
+      end
+    end
     
   end
 end

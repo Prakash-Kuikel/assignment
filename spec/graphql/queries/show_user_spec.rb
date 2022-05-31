@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Show user" do
-    let(:valid_user){ User.create(email: "a@a", name: "pk", password:"123", password_confirmation: "123") }
+    let(:valid_user){ User.create(email: "a@a", name: "pk", password:"12345678", password_confirmation: "12345678") }
 
     context "with valid id" do
         it "shows user details and his/her posts" do

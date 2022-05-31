@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Updating Post" do
 
     let(:valid_post) do
-        user = User.create(email: "a@a", name: "pk", password:"123", password_confirmation: "123")
+        user = User.create(email: "a@a", name: "pk", password:"12345678", password_confirmation: "12345678")
         user.posts.create(body: "This is a valid post")
     end
 

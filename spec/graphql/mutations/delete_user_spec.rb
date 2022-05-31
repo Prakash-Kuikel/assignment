@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe "Deleting user" do
 
-    let(:valid_user) { User.create(email: "a@a", name: "pk", password:"123", password_confirmation: "123") }
+    let(:valid_user) { User.create(email: "a@a", name: "pk", password:"12345678", password_confirmation: "12345678") }
 
     context "with valid UserID" do
         it "returns true" do

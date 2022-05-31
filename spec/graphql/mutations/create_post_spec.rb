@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Creating a post" do
-    let(:valid_user){ User.create(email: "a@a", name: "pk", password:"123", password_confirmation: "123") }
-
+    let(:valid_user){ User.create(email: "a@a", name: "pk", password:"12345678", password_confirmation: "12345678") }
+    
     context "with valid userID" do
         it "returns postID" do
             variable = { "post": { "userId": valid_user[:id], "body": "hello" } }

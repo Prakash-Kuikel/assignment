@@ -4,7 +4,7 @@ RSpec.describe "Creating a new user" do
     context "with valid input" do
         it "creates new user and returns id" do
             
-            variable = {"user": { "name": "Sonam Wangmo", "email": "sonam@gmail.com", "password": "123", "passwordConfirmation": "123"} }
+            variable = {"user": { "name": "Sonam Wangmo", "email": "sonam@gmail.com", "password": "12345678", "passwordConfirmation": "12345678"} }
         
             result = MiniTwitterSchema.execute(create_user_query, variables: variable)
 
@@ -15,7 +15,7 @@ RSpec.describe "Creating a new user" do
     context "with invalid input" do
         it "returns null" do
             
-            variable = {"user": { "name": "Sonam Wangmo", "email": "sonam@gmail.com", "password": "123", "passwordConfirmation": "321"} }
+            variable = {"user": { "name": "Sonam Wangmo", "email": "sonam@gmail.com", "password": "12345678", "passwordConfirmation": "321"} }
            
             result = MiniTwitterSchema.execute(create_user_query, variables: variable)
 
