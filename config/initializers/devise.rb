@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '82e11d97b9a6f92ac1f9f075bf302b2501019299d4eb1e9168487d86b95b9a4e2365afa6ae3859ec41352f6f5d6c302e56cc9cf1a9d5e35d27fb3dee7c2f7483'
+  # config.secret_key = 'b2d2f607b5d6ba5746ba323fe01156f1728ffbd9496e35caf414b41a682a2adf3487c1d09653937963c105fec6a8011b4e3d7597538b61eca3d2fc12ca47b142'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -126,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '227387ebcc6fa7719132a58aa0facbec3b9cc9283effe66d6406cb5b84ed7230ce9678d2ae70ede691a61b3a17b52e3e0aa5722a6e2eb1dac6f1fd7b008169c7'
+  # config.pepper = 'dc07a555c5f9a2b3c890911469a7b8da0e5419339ae89e18b870bd130a905d98de5fb8bf16bc6f90aa35a7fa2edf6c79f97a857bca3778a4cd6da6feed0d384a'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -308,4 +308,23 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+end
+
+Devise::TokenAuthenticatable.setup do |config|
+  # enables the expiration of a token after a specified amount of time,
+  # requires an additional field on the model: `authentication_token_created_at`
+  # defaults to nil
+  # config.token_expires_in = 1.day
+
+  # set the authentication key name used by this module,
+  # defaults to :auth_token
+  # config.token_authentication_key = :other_key_name
+
+  # enable reset of the authentication token before the model is saved,
+  # defaults to false
+  # config.should_reset_authentication_token = true
+
+  # enables the setting of the authentication token - if not already - before the model is saved,
+  # defaults to false
+  config.should_ensure_authentication_token = true
 end

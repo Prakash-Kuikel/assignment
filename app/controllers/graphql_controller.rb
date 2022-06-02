@@ -8,9 +8,12 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
+
+    #retrieving the user from db based on auth_token from HTTP header
+    current_user = User.where(authentication_token: request.headers['authtoken']).first
+  
     context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: current_user
     }
     result = MiniTwitterSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result

@@ -1,4 +1,5 @@
 class MiniTwitterSchema < GraphQL::Schema
+
   mutation(Types::MutationType)
   query(Types::QueryType)
 
