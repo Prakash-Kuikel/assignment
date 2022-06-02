@@ -4,6 +4,8 @@ class Mutations::UpdateUser < GraphQL::Schema::Mutation
 
     argument :user, Types::UserInputType, required: true
     
+    type Boolean
+
     def resolve(user:)
         existing_user = User.find(user[:id])
         existing_user.update user.to_h

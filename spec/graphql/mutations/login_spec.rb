@@ -10,8 +10,8 @@ describe "Logging in" do
                 "email": valid_user[:email],
                 "password": "12345678"
               })
-            
-            expect(result.dig("data", "login")).to eq(valid_user[:authentication_token])
+        
+            expect(result.dig("data", "login", "authenticationToken")).to eq(valid_user[:authentication_token])
         end
     end
 
@@ -28,8 +28,10 @@ describe "Logging in" do
 
     def login_query 
         <<~GQL
-            query($email: String!, $password: String!){
-                login(email: $email, password: $password)
+            mutation($email: String!, $password: String!){
+                login(email: $email, password: $password){
+                    authenticationToken
+                }
             }
         GQL
     end

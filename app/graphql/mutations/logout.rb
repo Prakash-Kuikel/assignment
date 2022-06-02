@@ -2,6 +2,8 @@ class Mutations::Logout < GraphQL::Schema::Mutation
     
     null true
 
+    type Boolean
+
     def resolve
         current_user = context[:current_user]
 

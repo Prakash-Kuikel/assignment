@@ -8,7 +8,7 @@ describe "Deleting user" do
         it "returns true" do
             variable = { "id": valid_user[:id] }
             result = MiniTwitterSchema.execute(delete_user_query, variables: variable)
-        
+    
             expect(result.dig("data", "deleteUser")).to eq(true)
         end
     end

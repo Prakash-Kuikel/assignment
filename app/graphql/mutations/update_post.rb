@@ -4,6 +4,8 @@ class Mutations::UpdatePost < GraphQL::Schema::Mutation
 
     argument :post, Types::PostInputType, required: true
   
+    type Boolean
+
     def resolve(post:)
       existing_post = Post.find(post[:id])
       existing_post.update post.to_h

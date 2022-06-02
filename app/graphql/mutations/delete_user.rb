@@ -4,6 +4,8 @@ class Mutations::DeleteUser < GraphQL::Schema::Mutation
 
     argument :id, ID, required: true
 
+    type Boolean
+
     def resolve(id:)
       user = User.find(id)
       user.destroy

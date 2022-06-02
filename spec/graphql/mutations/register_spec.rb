@@ -1,14 +1,14 @@
 require "rails_helper"
 
-RSpec.describe "Creating a new user" do
+RSpec.describe "Registering a new user" do
     context "with valid input" do
         it "creates new user and returns id" do
             
             variable = {"user": { "name": "Sonam Wangmo", "email": "sonam@gmail.com", "password": "12345678", "passwordConfirmation": "12345678"} }
         
             result = MiniTwitterSchema.execute(create_user_query, variables: variable)
-
-            expect(result.dig("data", "createUser", "id")).to be_present
+           
+            expect(result.dig("data", "register", "authenticationToken")).to be_present
         end
     end
 
@@ -18,7 +18,7 @@ RSpec.describe "Creating a new user" do
             variable = {"user": { "name": "Sonam Wangmo", "email": "sonam@gmail.com", "password": "12345678", "passwordConfirmation": "321"} }
            
             result = MiniTwitterSchema.execute(create_user_query, variables: variable)
-
+           
             expect(result.dig("data", "createUser", "id")).to be_blank
         end
     end
@@ -26,8 +26,8 @@ RSpec.describe "Creating a new user" do
     def create_user_query 
         query = <<~GQL
                 mutation($user:UserInputType!){
-                    createUser(user: $user){
-                        id
+                    register(user: $user){
+                        authenticationToken
                     }
                 }
             GQL
