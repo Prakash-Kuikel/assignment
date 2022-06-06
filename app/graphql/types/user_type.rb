@@ -1,10 +1,8 @@
 class Types::UserType < Types::BaseObject
+  field :id, ID, null: true
+  field :name, String, null: true
+  field :email, String, null: true
+  field :authentication_token, String, null: true
 
-    field :name, String, null: true
-    field :email, String, null: true
-
-    field :post, [Types::PostType], null: true, description: "Display all posts of user"
-    def post
-        Post.where(user_id: object.id).all
-    end
+  field :posts, [Types::PostType], null: true, description: "Display all posts of user"
 end
