@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_02_125805) do
+ActiveRecord::Schema.define(version: 2022_06_06_120430) do
+
   create_table "admins", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -33,6 +34,14 @@ ActiveRecord::Schema.define(version: 2022_06_02_125805) do
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_admins_on_uid_and_provider", unique: true
+  end
+
+  create_table "followings", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "following_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "following_id"], name: "index_followings_on_user_id_and_following_id", unique: true
   end
 
   create_table "posts", force: :cascade do |t|
@@ -62,5 +71,6 @@ ActiveRecord::Schema.define(version: 2022_06_02_125805) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "followings", "users", column: "following_id"
   add_foreign_key "posts", "users"
 end

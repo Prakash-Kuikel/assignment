@@ -14,15 +14,6 @@ RSpec.describe "Creating a post" do
     end
   end
 
-  # context "if not logged in" do
-  #     it "returns nil" do
-  #         variable = { "post": { "userId": 312, "body": "hello" } }
-  #         result = MiniTwitterSchema.execute(create_post_query, variables: variable)
-
-  #         expect(result.dig("data", "createPost", "id")).to be_blank
-  #     end
-  # end
-
   def create_post_query
     <<~GQL
       mutation ($post:PostInputType!){

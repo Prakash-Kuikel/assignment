@@ -39,6 +39,7 @@ group :development, :test do
   gem "rspec-rails", '~> 5.1.2'
   gem 'ffi', '~> 1.9', '>= 1.9.10'
   gem "pry"
+  gem "factory_bot_rails"
 end
 
 group :development do
