@@ -1,11 +1,13 @@
 class Mutations::Register < GraphQL::Schema::Mutation
-    
-    null true
+  null true
+  argument :user, Types::UserInputType, required: true
+  type Types::UserType
+  def resolve(user:)
+    User.create user.to_h
+  end
 
-    argument :user, Types::UserInputType, required: true
-
-    def resolve(user:)
-        new_user = User.create user.to_h
-    end 
-
+  # visible only if not currently logged in
+  def self.visible?(context)
+    !context[:current_user]
+  end
 end

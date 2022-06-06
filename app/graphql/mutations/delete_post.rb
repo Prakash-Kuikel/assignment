@@ -1,14 +1,16 @@
 class Mutations::DeletePost < GraphQL::Schema::Mutation
-    
-    null true
+  null true
+  argument :post_id, ID, required: true
+  type Boolean
+  def resolve(post_id:)
+    return GraphQL::ExecutionError.new("Post not found") unless Post.exists?(id: post_id,
+                                                                             user_id: context[:current_user][:id])
 
-    argument :post_id, ID, required: true
+    return Post.find(post_id).destroy
+  end
 
-    type Boolean
-
-    def resolve(post_id:)
-        post = Post.find(post_id)
-        post.destroy
-    end
-
+  # visible only if not currently logged in
+  def self.visible?(context)
+    !!context[:current_user]
+  end
 end

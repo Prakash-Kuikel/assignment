@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_01_062318) do
-
+ActiveRecord::Schema.define(version: 2022_06_02_125805) do
   create_table "admins", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -63,4 +62,5 @@ ActiveRecord::Schema.define(version: 2022_06_01_062318) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "posts", "users"
 end

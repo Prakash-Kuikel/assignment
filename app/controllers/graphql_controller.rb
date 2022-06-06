@@ -8,21 +8,23 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-
-    #retrieving the user from db based on auth_token from HTTP header
-    current_user = User.where(authentication_token: request.headers['authtoken']).first
-  
     context = {
       current_user: current_user
     }
+
     result = MiniTwitterSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
+
     handle_error_in_development(e)
   end
 
   private
+
+  def current_user
+    User.find_by(authentication_token: request.headers['authtoken'])
+  end
 
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)

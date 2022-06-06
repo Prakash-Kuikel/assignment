@@ -1,16 +1,12 @@
 class Mutations::DeleteUser < GraphQL::Schema::Mutation
-    
-    null true
+  null true
+  type Boolean
+  def resolve
+    User.find(context[:current_user][:id]).destroy
+  end
 
-    argument :id, ID, required: true
-
-    type Boolean
-
-    def resolve(id:)
-      user = User.find(id)
-      user.destroy
-      posts = Post.where(user_id: id).all
-      posts.destroy_all
-    end
-
+  # visible only if not currently logged in
+  def self.visible?(context)
+    !!context[:current_user]
+  end
 end
