@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe "Logging out" do
-  let(:valid_user) { User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678") }
+  let(:valid_user) { create :user }
 
   context "if currently logged in" do
     it "returns true" do

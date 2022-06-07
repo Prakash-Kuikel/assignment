@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Following another user" do
-    let(:current_user) { User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678") }
-    let(:other_user) { User.create(email: "b@b", name: "Sonam", password: "123456", password_confirmation: "123456") }
+    let(:current_user) { create :user }
+    let(:other_user) { create :user, email: "b@b", name: "Sonam" }
     context "when user exists" do
         context "if not already following" do
             it "returns true" do
