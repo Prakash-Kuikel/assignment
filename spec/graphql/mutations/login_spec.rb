@@ -1,13 +1,13 @@
 require "rails_helper"
 
 describe "Logging in" do
-  let(:valid_user) { User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678") }
+  let(:valid_user) { create :user }
 
   context "with valid credentials" do
     it "returns a token" do
       result = MiniTwitterSchema.execute(login_query, variables: {
                                            "email": valid_user[:email],
-                                           "password": "12345678"
+                                           "password": "123456"
                                          })
 
       expect(result.dig("data", "login", "authenticationToken")).to eq(valid_user[:authentication_token])

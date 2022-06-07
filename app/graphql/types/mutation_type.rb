@@ -9,5 +9,7 @@ module Types
     field :delete_post, mutation: Mutations::DeletePost
     field :logout, mutation: Mutations::Logout
     field :follow, mutation: Mutations::Follow
+    field :create_comment, mutation: Mutations::CreateComment 
+    field :delete_comment, mutation: Mutations::DeleteComment
   end
 end

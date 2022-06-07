@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe "Deleting user" do
-  let(:current_user) { User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678") }
+  let(:current_user) { create :user }
 
   context "without logging in" do
     it "returns error" do

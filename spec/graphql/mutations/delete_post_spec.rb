@@ -1,9 +1,7 @@
 require "rails_helper"
 
 describe "Deleting a post" do
-  let(:current_user) do
-    User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678")
-  end
+  let(:current_user) { create :user }
   let(:valid_post) do
     current_user.posts.create(body: "This is a valid post")
   end

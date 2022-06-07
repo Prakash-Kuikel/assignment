@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "Updating User details" do
-  let(:current_user) { User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678") }
+  let(:current_user) { create :user }
 
   context "with correct old password" do
     it "returns true" do
       variable = {
-        "old_pwd": "12345678",
+        "old_pwd": "123456",
         "user": {
           "email": "edited@gmail.com",
           "name": "edited",
