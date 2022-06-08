@@ -22,7 +22,7 @@ RSpec.describe "Creating a comment" do
   end
 
   context "with invalid postId" do
-    it "returns error" do
+    it "raises error" do
         variable = { 
                     "postId": 123,
                     "text": "This is a comment" 

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Creating a post" do
+RSpec.describe "Creating a post", type: :request do
   let(:current_user) { create :user }
 
   context "if logged in" do
@@ -8,7 +8,7 @@ RSpec.describe "Creating a post" do
       variable = { "post": { "body": "hello" } }
       result = MiniTwitterSchema.execute(create_post_query, variables: variable,
                                                             context: { current_user: current_user })
-
+     
       expect(result.dig("data", "createPost", "id")).to be_present
       expect(result.dig("data", "createPost", "body")).to eq("hello")
     end
