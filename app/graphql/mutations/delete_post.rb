@@ -8,9 +8,4 @@ class Mutations::DeletePost < GraphQL::Schema::Mutation
 
     return Post.find(post_id).destroy
   end
-
-  # visible only if not currently logged in
-  def self.visible?(context)
-    !!context[:current_user]
-  end
 end

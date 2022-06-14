@@ -1,8 +1,8 @@
 require "rails_helper"
 
-RSpec.describe "Updating User details" do
-  let(:current_user) { create :user }
-
+RSpec.describe "Updating User details", type: :request do
+  let(:user) { create :user }
+  before { sign_in(user) }
   context "with correct old password" do
     it "returns true" do
       variable = {
@@ -14,10 +14,9 @@ RSpec.describe "Updating User details" do
           "passwordConfirmation": "edited123"
         }
       }
-      result = MiniTwitterSchema.execute(update_user_query, variables: variable,
-                                                            context: { current_user: current_user })
-
-      expect(result.dig("data", "updateUser")).to eq(true)
+      post graphql_path params: {query: update_user_query, variables: variable}
+      expect(json.data.updateUser).to eq(true)
+      
     end
   end
 
@@ -33,10 +32,8 @@ RSpec.describe "Updating User details" do
         }
       }
 
-      result = MiniTwitterSchema.execute(update_user_query, variables: variable,
-                                                            context: { current_user: current_user })
-
-      expect(result["errors"][0]["message"]).to eq("Wrong password!")
+      post graphql_path params: {query: update_user_query, variables: variable}
+      expect(json.errors[0]["message"]).to eq("Wrong password!")
     end
   end
 

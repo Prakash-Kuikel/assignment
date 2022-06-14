@@ -12,9 +12,4 @@ class Mutations::LikePost < GraphQL::Schema::Mutation
             return GraphQL::ExecutionError.new("You've already liked this post")
         end
     end
-
-    # visible only if not currently logged in
-    def self.visible?(context)
-        !!context[:current_user]
-    end
 end

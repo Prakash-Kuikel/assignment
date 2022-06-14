@@ -12,9 +12,4 @@ class Mutations::RemoveLike < GraphQL::Schema::Mutation
             return GraphQL::ExecutionError.new("You've not liked this post yet")
         end
     end
-
-    # visible only if not currently logged in
-    def self.visible?(context)
-        !!context[:current_user]
-    end
 end
