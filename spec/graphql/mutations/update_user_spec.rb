@@ -15,7 +15,7 @@ RSpec.describe "Updating User details", type: :request do
         }
       }
       post graphql_path params: {query: update_user_query, variables: variable}
-      expect(json.data.updateUser).to eq(true)
+      expect(response_body_json.data.updateUser).to eq(true)
       
     end
   end
@@ -33,7 +33,7 @@ RSpec.describe "Updating User details", type: :request do
       }
 
       post graphql_path params: {query: update_user_query, variables: variable}
-      expect(json.errors[0]["message"]).to eq("Wrong password!")
+      expect(response_body_json.errors[0]["message"]).to eq("Wrong password!")
     end
   end
 

@@ -10,8 +10,8 @@ RSpec.describe "Creating a post", type: :request do
       var = { "post": { "body": "hello" } }
       post graphql_path params: {query: query, variables: var}
       
-      expect(json.data.createPost.id).to be_present
-      expect(json.data.createPost.body).to eq("hello")
+      expect(response_body_json.data.createPost.id).to be_present
+      expect(response_body_json.data.createPost.body).to eq("hello")
     end
   end
 

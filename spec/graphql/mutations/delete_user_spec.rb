@@ -12,17 +12,27 @@ describe "Deleting user", type: :request do
   end
 
   context "while logged in" do
-    it "returns true" do
-      sign_in(user)
-      post graphql_path params: {query: delete_user_query}
-      expect(json.data.deleteUser).to eq(true)
+    before { sign_in(user) }
+    context "with correct old password" do
+      it "returns true" do
+        variable = {"old_pwd": "123456"}
+        post graphql_path params: {query: delete_user_query, variables: variable}
+        expect(response_body_json.data.deleteUser).to eq(true)
+      end
+    end
+    context "with invalid old password" do
+      it "returns error" do
+        variable = {"old_pwd": "BAD-PWD"}
+        post graphql_path params: {query: delete_user_query, variables: variable}
+        expect(response_body_json.errors[0]["message"]).to eq("Wrong password!")
+      end
     end
   end
 
   def delete_user_query
     <<~GQL
-      mutation{
-          deleteUser
+      mutation($old_pwd: String!){
+          deleteUser(oldPassword: $old_pwd)
       }
     GQL
   end

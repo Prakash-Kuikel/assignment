@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
-    before_action :authenticate_user!
+    include ActionController::MimeResponds
     respond_to :json
+    before_action :authenticate_user!
 end

@@ -11,7 +11,7 @@ describe "Deleting a post", type: :request do
     it "returns true" do
       variable = { "id": valid_post[:id] }
       post graphql_path params: {query: delete_post_query, variables: variable}
-      expect(json.data.deletePost).to eq(true)
+      expect(response_body_json.data.deletePost).to eq(true)
     end
   end
 
@@ -19,7 +19,7 @@ describe "Deleting a post", type: :request do
     it "returns error" do
       variable = { "id": 314 }
       post graphql_path params: {query: delete_post_query, variables: variable}
-      expect(json.errors[0]["message"]).to eq("Post not found")
+      expect(response_body_json.errors[0]["message"]).to eq("Post not found")
     end
   end
 
