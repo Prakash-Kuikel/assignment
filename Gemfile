@@ -10,6 +10,7 @@ gem "bootsnap", require: false
 gem "tzinfo-data", "~> 1.2021", ">= 1.2021.5"
 gem "graphql"
 gem "devise"
+gem "devise-jwt"
 gem 'net-smtp'
 gem 'rubocop', require: false
 gem 'recursive-open-struct'
@@ -19,6 +20,7 @@ group :development, :test do
   gem 'ffi', '~> 1.9', '>= 1.9.10'
   gem "pry"
   gem "factory_bot_rails"
+  gem 'dotenv-rails'
 end
 
 group :development do

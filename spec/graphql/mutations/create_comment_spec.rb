@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Creating a comment", type: :request do
   
   let(:user) { create :user }
-  before { sign_in(user) }
+  before {sign_in(user)}
   let(:another_user) { create :user, email: "b@b", name: "Sonam" }
   let(:other_user_post) { another_user.posts.create body: "This is a valid post" }
 
@@ -13,12 +13,12 @@ RSpec.describe "Creating a comment", type: :request do
                     "postId": other_user_post.id,
                     "text": "This is a comment" 
                  }
-
+      
       post graphql_path params: {query: query, variables: variable}
-
-      expect(json.data.createComment.id).to be_present
-      expect(json.data.createComment.comment).to eq("This is a comment")
-      expect(json.data.createComment.userId).to eq(String(user.id))
+    
+      expect(response_body_json.data.createComment.id).to be_present
+      expect(response_body_json.data.createComment.comment).to eq("This is a comment")
+      expect(response_body_json.data.createComment.userId).to eq(String(user.id))
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe "Creating a comment", type: :request do
                  }
 
         post graphql_path params: {query: query, variables: variable}
-        expect(json.errors[0]["message"]).to eq("Post not found!")
+        expect(response_body_json.errors[0]["message"]).to eq("Post not found!")
     end
   end
 

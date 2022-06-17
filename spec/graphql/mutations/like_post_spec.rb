@@ -13,7 +13,7 @@ RSpec.describe "Liking a post", type: :request do
                         "postId": valid_post.id
                         }
             post graphql_path params: {query: like_post_query, variables: variable}
-            expect(json.data.likePost).to eq(true)
+            expect(response_body_json.data.likePost).to eq(true)
         end
     end
     
@@ -24,7 +24,7 @@ RSpec.describe "Liking a post", type: :request do
                         "postId": valid_post.id
                      }
             post graphql_path params: {query: like_post_query, variables: variable}
-            expect(json.errors[0]["message"]).to eq("You've already liked this post")
+            expect(response_body_json.errors[0]["message"]).to eq("You've already liked this post")
         end
       end
   end
@@ -35,7 +35,7 @@ RSpec.describe "Liking a post", type: :request do
                     "postId": 123
                  }
         post graphql_path params: {query: like_post_query, variables: variable}
-        expect(json.errors[0]["message"]).to eq("Post not found!")
+        expect(response_body_json.errors[0]["message"]).to eq("Post not found!")
     end
   end
 
