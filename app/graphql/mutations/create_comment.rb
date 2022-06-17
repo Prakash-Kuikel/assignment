@@ -8,9 +8,4 @@ class Mutations::CreateComment < GraphQL::Schema::Mutation
         return GraphQL::ExecutionError.new("Post not found!") unless Post.exists?(post_id)
         Post.find(post_id).comments.create user_id: commenter_id, comment: text
     end
-
-    # visible only if not currently logged in
-    def self.visible?(context)
-        !!context[:current_user]
-    end
 end

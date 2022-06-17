@@ -8,9 +8,4 @@ class Mutations::UpdatePost < GraphQL::Schema::Mutation
 
     return Post.find(post[:id]).update post.to_h
   end
-
-  # visible only if currently logged in
-  def self.visible?(context)
-    !!context[:current_user]
-  end
 end

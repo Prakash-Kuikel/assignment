@@ -6,9 +6,4 @@ class Mutations::CreatePost < GraphQL::Schema::Mutation
     user = context[:current_user]
     user.posts.create(body: post[:body])
   end
-
-  # visible only if not currently logged in
-  def self.visible?(context)
-    !!context[:current_user]
-  end
 end

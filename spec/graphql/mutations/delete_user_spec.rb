@@ -1,19 +1,21 @@
 require "rails_helper"
 
-describe "Deleting user" do
-  let(:current_user) { create :user }
-
+describe "Deleting user", type: :request do
+  let(:user) { create :user }
+  
   context "without logging in" do
     it "returns error" do
-      result = MiniTwitterSchema.execute(delete_user_query, context: { current_user: nil })
-      expect(result["errors"][0]["message"]).to eq("Field 'deleteUser' doesn't exist on type 'Mutation'")
+      post graphql_path params: {query: delete_user_query}
+      expect(status).to eq(302)
+      expect(response.body).to include("You are being <a href=\"http://www.example.com/users/sign_in\">redirected")
     end
   end
 
   context "while logged in" do
     it "returns true" do
-      result = MiniTwitterSchema.execute(delete_user_query, context: { current_user: current_user })
-      expect(result.dig("data", "deleteUser")).to eq(true)
+      sign_in(user)
+      post graphql_path params: {query: delete_user_query}
+      expect(json.data.deleteUser).to eq(true)
     end
   end
 
