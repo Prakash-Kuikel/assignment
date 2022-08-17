@@ -9,9 +9,4 @@ class Mutations::UpdateUser < GraphQL::Schema::Mutation
 
     current_user.update new_data.to_h
   end
-
-  # visible only if not currently logged in
-  def self.visible?(context)
-    !!context[:current_user]
-  end
 end

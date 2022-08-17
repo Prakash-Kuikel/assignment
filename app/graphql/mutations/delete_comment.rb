@@ -8,9 +8,4 @@ class Mutations::DeleteComment < GraphQL::Schema::Mutation
 
     return Comment.find(comment_id).destroy
   end
-
-  # visible only if not currently logged in
-  def self.visible?(context)
-    !!context[:current_user]
-  end
 end

@@ -1,9 +1,10 @@
 require "rails_helper"
 
-RSpec.describe "Updating Post" do
-  let(:current_user) { create :user }
+RSpec.describe "Updating Post", type: :request do
+  let(:user) { create :user }
+  before { sign_in(user) }
   let(:valid_post) do
-    current_user.posts.create(body: "This is a valid post")
+    user.posts.create(body: "This is a valid post")
   end
 
   context "with valid postID" do
@@ -14,10 +15,8 @@ RSpec.describe "Updating Post" do
           "body": "Updated body",
         }
       }
-      result = MiniTwitterSchema.execute(update_post_query, variables: variable,
-                                                            context: { current_user: current_user })
-
-      expect(result.dig("data", "updatePost")).to eq(true)
+      post graphql_path params: {query: update_post_query, variables: variable}
+      expect(json.data.updatePost).to eq(true)
     end
   end
 
@@ -29,9 +28,8 @@ RSpec.describe "Updating Post" do
           "body": "Updated body",
         }
       }
-      result = MiniTwitterSchema.execute(update_post_query, variables: variable,
-                                                            context: { current_user: current_user })
-      expect(result["errors"][0]["message"]).to eq("Post not found")
+      post graphql_path params: {query: update_post_query, variables: variable}
+      expect(json.errors[0]["message"]).to eq("Post not found")
     end
   end
 
