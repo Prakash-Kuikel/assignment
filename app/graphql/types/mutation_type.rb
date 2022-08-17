@@ -8,5 +8,6 @@ module Types
     field :delete_user, mutation: Mutations::DeleteUser
     field :delete_post, mutation: Mutations::DeletePost
     field :logout, mutation: Mutations::Logout
+    field :follow, mutation: Mutations::Follow
   end
 end
