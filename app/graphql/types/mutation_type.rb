@@ -11,5 +11,7 @@ module Types
     field :follow, mutation: Mutations::Follow
     field :create_comment, mutation: Mutations::CreateComment 
     field :delete_comment, mutation: Mutations::DeleteComment
+    field :like_post, mutation: Mutations::LikePost
+    field :remove_like, mutation: Mutations::RemoveLike
   end
 end
