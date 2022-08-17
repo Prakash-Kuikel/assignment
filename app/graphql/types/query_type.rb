@@ -1,18 +1,11 @@
 module Types
   class QueryType < Types::BaseObject
-    # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
-
-    field :show_user, Types::UserType, null: true, description: "Display user details" do
-      argument :id, ID, required: true
+    field :current_user, Types::UserType, null: true
+    def current_user
+      context[:current_user]
     end
-    def show_user(id:)
-      User.find(id)
-    end
-    
   end
 end

@@ -1,5 +1,0 @@
-test:
-  id: 1
-  email: abc@gmail.com
-  name: Prakash
-  password_digest: 123
