@@ -28,11 +28,9 @@ group :development, :test do
   gem 'ffi', '~> 1.9', '>= 1.9.10'
   gem 'pry'
   gem 'rspec-rails', '~> 5.1.2'
+  gem 'shoulda-matchers'
 end
 
 group :development do
 end
 
-group :test do
-  gem 'shoulda-matchers'
-end

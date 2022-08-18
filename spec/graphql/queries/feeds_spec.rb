@@ -15,8 +15,10 @@ RSpec.describe 'Feeds', type: :request do
     user2.posts.create body: 'This is post2 by User2'
     user2.posts.create body: 'This is post3 by User2'
   end
+
   context 'while logged in' do
     before { sign_in current_user }
+
     it "displays other user's posts" do
       post graphql_path params: { query: feeds_query }
 
