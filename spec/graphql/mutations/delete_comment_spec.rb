@@ -10,7 +10,7 @@ describe "Deleting a comment", type: :request do
     it "returns true" do
       variable = { "id": valid_comment[:id] }
       post graphql_path params: {query: delete_comment_query, variables: variable}
-      expect(json.data.deleteComment).to eq(true)
+      expect(response_body_json.data.deleteComment).to eq(true)
       end
     end
 
@@ -18,7 +18,7 @@ describe "Deleting a comment", type: :request do
     it "returns error" do
       variable = { "id": 123 }
       post graphql_path params: {query: delete_comment_query, variables: variable}
-      expect(json.errors[0]["message"]).to eq("Comment not found")
+      expect(response_body_json.errors[0]["message"]).to eq("Comment not found")
     end
   end
 

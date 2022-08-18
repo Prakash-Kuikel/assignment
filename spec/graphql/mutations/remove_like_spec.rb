@@ -15,7 +15,7 @@ RSpec.describe "Removing like from a post", type: :request do
                         }
 
             post graphql_path params: {query: remove_like_query, variables: variable}
-            expect(json.data.removeLike).to eq(true)
+            expect(response_body_json.data.removeLike).to eq(true)
         end
     end
     
@@ -26,7 +26,7 @@ RSpec.describe "Removing like from a post", type: :request do
                      }
     
             post graphql_path params: {query: remove_like_query, variables: variable}
-            expect(json.errors[0]["message"]).to eq("You've not liked this post yet")
+            expect(response_body_json.errors[0]["message"]).to eq("You've not liked this post yet")
         end
       end
   end
@@ -38,7 +38,7 @@ RSpec.describe "Removing like from a post", type: :request do
                  }
 
         post graphql_path params: {query: remove_like_query, variables: variable}
-        expect(json.errors[0]["message"]).to eq("Post not found!")
+        expect(response_body_json.errors[0]["message"]).to eq("Post not found!")
     end
   end
 

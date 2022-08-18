@@ -16,7 +16,7 @@ RSpec.describe "Updating Post", type: :request do
         }
       }
       post graphql_path params: {query: update_post_query, variables: variable}
-      expect(json.data.updatePost).to eq(true)
+      expect(response_body_json.data.updatePost).to eq(true)
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe "Updating Post", type: :request do
         }
       }
       post graphql_path params: {query: update_post_query, variables: variable}
-      expect(json.errors[0]["message"]).to eq("Post not found")
+      expect(response_body_json.errors[0]["message"]).to eq("Post not found")
     end
   end
 

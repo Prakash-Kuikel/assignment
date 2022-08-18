@@ -10,7 +10,7 @@ RSpec.describe "Following another user", type: :request do
             it "returns true" do
                 variable = { "user_id": other_user.id }
                 post graphql_path params: {query: follow_query, variables: variable}
-                expect(json.data.follow).to eq(true)
+                expect(response_body_json.data.follow).to eq(true)
             end
         end
         context "if already following" do
