@@ -1,39 +1,45 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Updating User details", type: :request do
+require 'rails_helper'
+
+RSpec.describe Mutations::UpdateUser do
   let(:user) { create :user }
-  before { sign_in(user) }
-  context "with correct old password" do
-    it "returns true" do
-      variable = {
-        "old_pwd": "123456",
+  context 'with correct old password' do
+    let(:variable) do
+      {
+        "old_pwd": '123456',
         "user": {
-          "email": "edited@gmail.com",
-          "name": "edited",
-          "password": "edited123",
-          "passwordConfirmation": "edited123"
+          "email": 'edited@gmail.com',
+          "name": 'edited',
+          "password": 'edited123',
+          "passwordConfirmation": 'edited123'
         }
       }
-      post graphql_path params: {query: update_user_query, variables: variable}
-      expect(response_body_json.data.updateUser).to eq(true)
-      
+    end
+    it 'returns true' do
+      response, errors = formatted_response(update_user_query, current_user: user, key: :updateUser, variables: variable)
+
+      expect(errors).to be_nil
+      expect(response.to_h).to eq(true)
     end
   end
 
-  context "with incorrect old password" do
-    it "returns error" do
-      variable = {
-        "old_pwd": "BAD",
+  context 'with incorrect old password' do
+    let(:variable) do
+      {
+        "old_pwd": 'BAD',
         "user": {
-          "email": "edited",
-          "name": "edited",
-          "password": "edited",
-          "passwordConfirmation": "edited"
+          "email": 'edited',
+          "name": 'edited',
+          "password": 'edited',
+          "passwordConfirmation": 'edited'
         }
       }
+    end
+    it 'returns error' do
+      response, errors = formatted_response(update_user_query, current_user: user, key: :updateUser, variables: variable)
 
-      post graphql_path params: {query: update_user_query, variables: variable}
-      expect(response_body_json.errors[0]["message"]).to eq("Wrong password!")
+      expect(errors).to_not be_nil
     end
   end
 

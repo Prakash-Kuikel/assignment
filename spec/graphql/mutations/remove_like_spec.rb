@@ -1,44 +1,46 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Removing like from a post", type: :request do
+require 'rails_helper'
+
+RSpec.describe Mutations::RemoveLike do
   let(:user) { create :user }
-  before { sign_in(user) }
-  let(:valid_user) { create :user, email: "b@b", name: "Sonam" }
-  let(:valid_post) { valid_user.posts.create body: "This is a valid post" }
+  let(:valid_user) { create :user, email: 'b@b', name: 'Sonam' }
+  let(:valid_post) { valid_user.posts.create body: 'This is a valid post' }
 
-  context "with valid postId" do
-    context "if liked already" do
-        it "returns true" do
-            valid_post.likes.create user_id: user.id
-            variable = { 
-                        "postId": valid_post.id
-                        }
-
-            post graphql_path params: {query: remove_like_query, variables: variable}
-            expect(response_body_json.data.removeLike).to eq(true)
-        end
+  context 'with valid postId' do
+    let(:variable) do
+      {
+        "postId": valid_post.id
+      }
     end
-    
-    context "if not already liked" do
-        it "raises error" do
-            variable = { 
-                        "postId": valid_post.id
-                     }
-    
-            post graphql_path params: {query: remove_like_query, variables: variable}
-            expect(response_body_json.errors[0]["message"]).to eq("You've not liked this post yet")
-        end
+    context 'if liked already' do
+      it 'returns true' do
+        valid_post.likes.create user_id: user.id
+
+        response, errors = formatted_response(remove_like_query, current_user: user, key: :removeLike, variables: variable)
+
+        expect(errors).to be_nil
+        expect(response.to_h).to eq(true)
       end
+    end
+
+    context 'if not already liked' do
+      it 'raises error' do
+        response, errors = formatted_response(remove_like_query, current_user: user, key: :removeLike, variables: variable)
+
+        expect(errors).to_not be_nil
+      end
+    end
   end
 
-  context "with invalid postId" do
-    it "raises error" do
-        variable = { 
-                    "postId": 123
-                 }
+  context 'with invalid postId' do
+    it 'raises error' do
+      variable = {
+        "postId": 123
+      }
+      response, errors = formatted_response(remove_like_query, current_user: user, key: :removeLike, variables: variable)
 
-        post graphql_path params: {query: remove_like_query, variables: variable}
-        expect(response_body_json.errors[0]["message"]).to eq("Post not found!")
+      expect(errors).to_not be_nil
     end
   end
 

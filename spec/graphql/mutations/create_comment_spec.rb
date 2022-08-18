@@ -1,46 +1,56 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Creating a comment", type: :request do
-  
+require 'rails_helper'
+
+RSpec.describe Mutations::CreateComment do
   let(:user) { create :user }
-  before {sign_in(user)}
-  let(:another_user) { create :user, email: "b@b", name: "Sonam" }
-  let(:other_user_post) { another_user.posts.create body: "This is a valid post" }
+  let(:another_user) { create :user, email: 'b@b', name: 'Sonam' }
+  let(:other_user_post) { another_user.posts.create body: 'This is a valid post' }
 
-  context "with valid postId" do
-    it "creates comment and returns commentID" do
-      variable = { 
-                    "postId": other_user_post.id,
-                    "text": "This is a comment" 
-                 }
-      
-      post graphql_path params: {query: query, variables: variable}
-    
-      expect(response_body_json.data.createComment.id).to be_present
-      expect(response_body_json.data.createComment.comment).to eq("This is a comment")
-      expect(response_body_json.data.createComment.userId).to eq(String(user.id))
+  context 'with valid postId' do
+    let(:variable) do
+       {
+        "postId": other_user_post.id,
+        "comment": 'This is a comment'
+      }
+    end
+
+    let(:expected_response) do
+      {
+        comment: 'This is a comment',
+        postId: other_user_post.id.to_s,
+        userId: user.id.to_s
+      }
+    end
+
+    it 'creates comment and returns commentID' do
+      response, errors = formatted_response(query, current_user: user, variables: variable, key: :createComment)
+      expect(errors).to be_nil
+      expect(response.to_h).to eq(expected_response)
     end
   end
 
-  context "with invalid postId" do
-    it "raises error" do
-        variable = { 
-                    "postId": 123,
-                    "text": "This is a comment" 
-                 }
+  context 'with invalid postId' do
+    let(:variable) do
+      {
+        "postId": 123,
+        "comment": 'This is a comment'
+      }
+    end
 
-        post graphql_path params: {query: query, variables: variable}
-        expect(response_body_json.errors[0]["message"]).to eq("Post not found!")
+    it 'raises error' do
+      response, errors = formatted_response(query, current_user: user, variables: variable, key: :createComment)
+      expect(errors).to_not be_nil
     end
   end
 
   def query
     <<~GQL
-      mutation ($postId: ID!, $text: String!){
-        createComment(postId: $postId, text: $text){
-            id
+      mutation ($postId: ID!, $comment: String!){
+        createComment(postId: $postId, comment: $comment){
             comment
             userId
+            postId
         }
       }
     GQL

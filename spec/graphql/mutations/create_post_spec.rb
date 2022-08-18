@@ -1,25 +1,37 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Creating a post", type: :request do
-  
+require 'rails_helper'
+
+RSpec.describe Mutations::CreatePost do
   let(:user) { create :user }
-  before { sign_in(user) }
-  
-  context "if logged in" do
-    it "creates post and returns postID" do
-      var = { "post": { "body": "hello" } }
-      post graphql_path params: {query: query, variables: var}
-      
-      expect(response_body_json.data.createPost.id).to be_present
-      expect(response_body_json.data.createPost.body).to eq("hello")
+
+  context 'if logged in' do
+    let(:variable) do
+      {
+        "post":
+          {
+            "body": 'hello'
+          }
+      }
+    end
+
+    let(:expected_response) do
+      {
+        "body": 'hello'
+      }
+    end
+
+    it 'creates post and returns postID' do
+      response, errors = formatted_response(query, current_user: user, variables: variable, key: :createPost)
+      expect(errors).to be_nil
+      expect(response.to_h).to eq(expected_response)
     end
   end
 
   def query
     <<~GQL
-      mutation ($post:PostInputType!){
+      mutation ($post: PostInputType!){
         createPost(post: $post){
-          id
           body
         }
       }

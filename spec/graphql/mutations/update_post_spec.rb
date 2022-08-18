@@ -1,35 +1,43 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Updating Post", type: :request do
+require 'rails_helper'
+
+RSpec.describe Mutations::UpdatePost do
   let(:user) { create :user }
-  before { sign_in(user) }
   let(:valid_post) do
-    user.posts.create(body: "This is a valid post")
+    user.posts.create(body: 'This is a valid post')
   end
 
-  context "with valid postID" do
-    it "returns true" do
-      variable = {
+  context 'with valid postID' do
+    let(:variable) do
+      {
         "post": {
           "id": valid_post[:id],
-          "body": "Updated body",
+          "body": 'Updated body'
         }
       }
-      post graphql_path params: {query: update_post_query, variables: variable}
-      expect(response_body_json.data.updatePost).to eq(true)
+    end
+    it 'returns true' do
+      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost, variables: variable)
+
+      expect(errors).to be_nil
+      expect(response.to_h).to eq(true)
     end
   end
 
-  context "with invalid userID" do
-    it "returns error" do
-      variable = {
+  context 'with invalid userID' do
+    let(:variable) do
+      {
         "post": {
           "id": 431,
-          "body": "Updated body",
+          "body": 'Updated body'
         }
       }
-      post graphql_path params: {query: update_post_query, variables: variable}
-      expect(response_body_json.errors[0]["message"]).to eq("Post not found")
+    end
+    it 'returns error' do
+      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost, variables: variable)
+
+      expect(errors).to_not be_nil
     end
   end
 

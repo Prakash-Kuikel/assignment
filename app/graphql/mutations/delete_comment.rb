@@ -1,11 +1,13 @@
-class Mutations::DeleteComment < GraphQL::Schema::Mutation
-  null true
-  argument :comment_id, ID, required: true
-  type Boolean
-  def resolve(comment_id:)
-    return GraphQL::ExecutionError.new("Comment not found") unless Comment.exists?(id: comment_id,
-                                                                             user_id: context[:current_user][:id])
+# frozen_string_literal: true
 
-    return Comment.find(comment_id).destroy
+module Mutations
+  class DeleteComment < GraphQL::Schema::Mutation
+    null true
+    argument :comment_id, ID, required: true
+    type Boolean
+    def resolve(comment_id:)
+      comment = Comment.find(comment_id)
+      comment.destroy!
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class MutationType < Types::BaseObject
     field :create_post, mutation: Mutations::CreatePost
@@ -6,7 +8,7 @@ module Types
     field :delete_user, mutation: Mutations::DeleteUser
     field :delete_post, mutation: Mutations::DeletePost
     field :follow, mutation: Mutations::Follow
-    field :create_comment, mutation: Mutations::CreateComment 
+    field :create_comment, mutation: Mutations::CreateComment
     field :delete_comment, mutation: Mutations::DeleteComment
     field :like_post, mutation: Mutations::LikePost
     field :remove_like, mutation: Mutations::RemoveLike
