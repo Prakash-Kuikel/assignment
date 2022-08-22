@@ -4,26 +4,28 @@ require 'rails_helper'
 
 describe Mutations::DeleteComment do
   let(:user) { create :user }
-  let(:valid_post) { user.posts.create body: 'This is a valid post' }
-  let(:valid_comment) { valid_post.comments.create user_id: user.id, comment: 'This is a valid comment' }
+  let(:post) { create :post, user: user }
+  let(:comment) { create :comment, post: post, user: user }
 
   context 'with valid commentID' do
     it 'returns true' do
-      variable = { "id": valid_comment[:id] }
-      response, errors = formatted_response(delete_comment_query, current_user: user, variables: variable, key: :deleteComment)
+      variable = { id: comment[:id] }
+      response, errors = formatted_response(delete_comment_query, current_user: user, variables: variable,
+                                                                  key: :deleteComment)
 
       expect(errors).to be_nil
-      expect(response.to_h).to eq(true)
+      expect(response.to_h).to be(true)
     end
   end
 
   context 'with invalid commentID' do
-    let(:variable){ { "id": 123 } }
+    let(:variable) { { id: 123 } }
 
     it 'returns error' do
-      response, errors = formatted_response(delete_comment_query, current_user: user, variables: variable, key: :deleteComment)
+      response, errors = formatted_response(delete_comment_query, current_user: user, variables: variable,
+                                                                  key: :deleteComment)
 
-      expect(errors).to_not be_nil
+      expect(errors).not_to be_nil
     end
   end
 

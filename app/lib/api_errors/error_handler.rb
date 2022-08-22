@@ -35,7 +35,7 @@ module ApiErrors
     end
 
     def render_error(status, errors, message = nil)
-      Rollbar.error(errors)
+      # Rollbar.error(errors)
       render json: { errors: message || errors }, status: status
     end
   end

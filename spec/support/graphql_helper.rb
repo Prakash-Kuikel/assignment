@@ -19,6 +19,7 @@ end
 def formatted_response(query, current_user: nil, key: nil, variables: nil)
   response = execute(query, current_user: current_user, variables: variables)
   data = response[:data]
+
   [RecursiveOpenStruct.new(key ? data[key] : data), response[:errors]]
 rescue StandardError => e
   ap e.message # for easier debugging during failures

@@ -15,10 +15,10 @@ gem 'puma', '~> 5.0'
 gem 'rails', '~> 7.0.3'
 gem 'recursive-open-struct'
 gem 'rubocop', require: false
-gem 'rubocop-rails'
 gem 'rubocop-performance'
-gem 'rubocop-rspec'
+gem 'rubocop-rails'
 gem 'rubocop-rake'
+gem 'rubocop-rspec'
 gem 'tzinfo-data', '~> 1.2021', '>= 1.2021.5'
 
 group :development, :test do
@@ -28,7 +28,13 @@ group :development, :test do
   gem 'ffi', '~> 1.9', '>= 1.9.10'
   gem 'pry'
   gem 'rspec-rails', '~> 5.1.2'
+  gem 'shoulda-matchers'
+  gem "test-prof"
 end
 
 group :development do
+end
+
+group :test do
+
 end

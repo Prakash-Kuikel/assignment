@@ -5,6 +5,7 @@ module Mutations
     null true
     argument :comment_id, ID, required: true
     type Boolean
+
     def resolve(comment_id:)
       comment = Comment.find(comment_id)
       comment.destroy!

@@ -8,6 +8,7 @@ module Types
     field :created_at, String, null: true
     field :comments, [Types::CommentType], null: true
     field :likes, Integer, null: true
+
     def likes
       Like.where(post_id: object.id).all.count
     end

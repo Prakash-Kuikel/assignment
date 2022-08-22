@@ -11,12 +11,12 @@ RSpec.describe Mutations::LikePost do
     context 'if not liked already' do
       it 'returns true' do
         variable = {
-          "postId": valid_post.id
+          postId: valid_post.id
         }
         response, errors = formatted_response(like_post_query, current_user: user, key: :likePost, variables: variable)
 
         expect(errors).to be_nil
-        expect(response.to_h).to eq(true)
+        expect(response.to_h).to be(true)
       end
     end
 
@@ -24,11 +24,11 @@ RSpec.describe Mutations::LikePost do
       it 'raises error' do
         valid_post.likes.create user_id: user.id
         variable = {
-          "postId": valid_post.id
+          postId: valid_post.id
         }
         response, errors = formatted_response(like_post_query, current_user: user, key: :likePost, variables: variable)
 
-        expect(errors).to_not be_nil
+        expect(errors).not_to be_nil
       end
     end
   end
@@ -36,11 +36,11 @@ RSpec.describe Mutations::LikePost do
   context 'with invalid postId' do
     it 'raises error' do
       variable = {
-        "postId": 123
+        postId: 123
       }
       response, errors = formatted_response(like_post_query, current_user: user, key: :likePost, variables: variable)
 
-      expect(errors).to_not be_nil
+      expect(errors).not_to be_nil
     end
   end
 
