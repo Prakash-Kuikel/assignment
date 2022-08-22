@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'b2d2f607b5d6ba5746ba323fe01156f1728ffbd9496e35caf414b41a682a2adf3487c1d09653937963c105fec6a8011b4e3d7597538b61eca3d2fc12ca47b142'
+  # config.secret_key = 'e75e60c23838aef34ddbe032e90b09aca9a7de0583525fbf42ffaf309e7fd457f6e2aafbefaaaab5f8621f973181424811c3e9360d67cce97b7d03471736be8d'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -97,7 +97,7 @@ Devise.setup do |config|
   # Notice that if you are skipping storage for all authentication paths, you
   # may want to disable generating routes to Devise's sessions controller by
   # passing skip: :sessions to `devise_for` in your config/routes.rb
-  config.skip_session_storage = [:http_auth]
+  config.skip_session_storage = %i[http_auth params_auth]
 
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
@@ -126,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'dc07a555c5f9a2b3c890911469a7b8da0e5419339ae89e18b870bd130a905d98de5fb8bf16bc6f90aa35a7fa2edf6c79f97a857bca3778a4cd6da6feed0d384a'
+  # config.pepper = 'e30579dbed35ff3f4e267e134ace93b9bca09fd24ab001d0f1bbae7fc7b30c8866e75d48149aff93aea7c79fddb09135464f5aeeddf351fcce67338aeab744e0'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -308,23 +308,14 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
-end
-
-Devise::TokenAuthenticatable.setup do |config|
-  # enables the expiration of a token after a specified amount of time,
-  # requires an additional field on the model: `authentication_token_created_at`
-  # defaults to nil
-  # config.token_expires_in = 1.day
-
-  # set the authentication key name used by this module,
-  # defaults to :auth_token
-  # config.token_authentication_key = :other_key_name
-
-  # enable reset of the authentication token before the model is saved,
-  # defaults to false
-  # config.should_reset_authentication_token = true
-
-  # enables the setting of the authentication token - if not already - before the model is saved,
-  # defaults to false
-  config.should_ensure_authentication_token = true
+  config.jwt do |jwt|
+    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.dispatch_requests = [
+      ['POST', %r{^/sign_in$}]
+    ]
+    jwt.revocation_requests = [
+      ['DELETE', %r{^/sign_out$}]
+    ]
+    jwt.expiration_time = 15.day.to_i
+  end
 end

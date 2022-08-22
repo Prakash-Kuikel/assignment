@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GraphqlController < ApplicationController
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
@@ -11,7 +13,6 @@ class GraphqlController < ApplicationController
     context = {
       current_user: current_user
     }
-
     result = MiniTwitterSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue StandardError => e
@@ -21,10 +22,6 @@ class GraphqlController < ApplicationController
   end
 
   private
-
-  def current_user
-    User.find_by(authentication_token: request.headers['authtoken'])
-  end
 
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)

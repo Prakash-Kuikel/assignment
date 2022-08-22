@@ -1,39 +1,43 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Updating Post" do
-  let(:current_user) do
-    User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678")
-  end
+require 'rails_helper'
+
+RSpec.describe Mutations::UpdatePost do
+  let(:user) { create :user }
   let(:valid_post) do
-    current_user.posts.create(body: "This is a valid post")
+    user.posts.create(body: 'This is a valid post')
   end
 
-  context "with valid postID" do
-    it "returns true" do
-      variable = {
+  context 'with valid postID' do
+    let(:variable) do
+      {
         "post": {
           "id": valid_post[:id],
-          "body": "Updated body",
+          "body": 'Updated body'
         }
       }
-      result = MiniTwitterSchema.execute(update_post_query, variables: variable,
-                                                            context: { current_user: current_user })
+    end
+    it 'returns true' do
+      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost, variables: variable)
 
-      expect(result.dig("data", "updatePost")).to eq(true)
+      expect(errors).to be_nil
+      expect(response.to_h).to eq(true)
     end
   end
 
-  context "with invalid userID" do
-    it "returns error" do
-      variable = {
+  context 'with invalid userID' do
+    let(:variable) do
+      {
         "post": {
           "id": 431,
-          "body": "Updated body",
+          "body": 'Updated body'
         }
       }
-      result = MiniTwitterSchema.execute(update_post_query, variables: variable,
-                                                            context: { current_user: current_user })
-      expect(result["errors"][0]["message"]).to eq("Post not found")
+    end
+    it 'returns error' do
+      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost, variables: variable)
+
+      expect(errors).to_not be_nil
     end
   end
 

@@ -1,26 +1,32 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-describe "Deleting user" do
-  let(:current_user) { User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678") }
+require 'rails_helper'
 
-  context "without logging in" do
-    it "returns error" do
-      result = MiniTwitterSchema.execute(delete_user_query, context: { current_user: nil })
-      expect(result["errors"][0]["message"]).to eq("Field 'deleteUser' doesn't exist on type 'Mutation'")
+describe Mutations::DeleteUser do
+  let(:user) { create :user }
+
+  context 'with correct old password' do
+    it 'returns true' do
+      variable = { "old_pwd": '123456' }
+      response, errors = formatted_response(delete_user_query, current_user: user, key: :deleteUser, variables: variable)
+
+      expect(errors).to be_nil
+      expect(response.to_h).to eq(true)
     end
   end
 
-  context "while logged in" do
-    it "returns true" do
-      result = MiniTwitterSchema.execute(delete_user_query, context: { current_user: current_user })
-      expect(result.dig("data", "deleteUser")).to eq(true)
+  context 'with invalid old password' do
+    it 'returns error' do
+      variable = { "old_pwd": 'BAD-PWD' }
+      response, errors = formatted_response(delete_user_query, current_user: user, key: :deleteUser, variables: variable)
+
+      expect(errors).to_not be_nil
     end
   end
-
   def delete_user_query
     <<~GQL
-      mutation{
-          deleteUser
+      mutation($old_pwd: String!){
+          deleteUser(oldPassword: $old_pwd)
       }
     GQL
   end

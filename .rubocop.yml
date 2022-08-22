@@ -1,0 +1,95 @@
+require:
+  - ./lib/rubocop/cop/metrics/selise_method_length.rb
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rails
+  - rubocop-rake
+
+AllCops:
+  Exclude:
+    - bin/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - lib/tasks/stitch_schema.rake
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  TargetRubyVersion: 3.0.3
+  NewCops: enable
+
+Metrics/SeliseMethodLength:
+  CountComments: false
+  Max: 10
+  IgnoredMethods:
+    - resolve
+    - change
+    - paginated_collection
+    - up
+    - prepare_variables
+    - pending_reconfirmation?
+    - down
+    - error_class
+    - create_service_now_ticket!
+
+Metrics/MethodLength:
+  Enabled: false # Use SeliseMethodLength instead
+
+Metrics/BlockLength:
+  IgnoredMethods:
+    - configure
+    - describe
+    - define
+    - post
+    - path
+    - up
+    - create_table
+    - response
+    - put
+    - context
+    - factory
+    - setup
+    - run_test!
+    - shared_context
+    - included
+
+Metrics/AbcSize:
+  IgnoredMethods:
+    - change
+    - query_string
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: optional
+
+Style/Documentation:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  ForbiddenMethods:
+    - up
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 6
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/EmptyExampleGroup:
+  Exclude: [ 'spec/requests/uam/**/*' ]
+
+RSpec/ExampleLength:
+  Max: 25
+
+RSpec/ContextWording:
+  Prefixes:
+    - for
+    - when
+    - with
+    - without
+RSpec/VariableName:
+  IgnoredPatterns:
+    - Authorization
+
+RSpec/AnyInstance:
+  Enabled: false

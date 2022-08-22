@@ -1,42 +1,45 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Updating User details" do
-  let(:current_user) { User.create(email: "a@a", name: "pk", password: "12345678", password_confirmation: "12345678") }
+require 'rails_helper'
 
-  context "with correct old password" do
-    it "returns true" do
-      variable = {
-        "old_pwd": "12345678",
+RSpec.describe Mutations::UpdateUser do
+  let(:user) { create :user }
+  context 'with correct old password' do
+    let(:variable) do
+      {
+        "old_pwd": '123456',
         "user": {
-          "email": "edited@gmail.com",
-          "name": "edited",
-          "password": "edited123",
-          "passwordConfirmation": "edited123"
+          "email": 'edited@gmail.com',
+          "name": 'edited',
+          "password": 'edited123',
+          "passwordConfirmation": 'edited123'
         }
       }
-      result = MiniTwitterSchema.execute(update_user_query, variables: variable,
-                                                            context: { current_user: current_user })
+    end
+    it 'returns true' do
+      response, errors = formatted_response(update_user_query, current_user: user, key: :updateUser, variables: variable)
 
-      expect(result.dig("data", "updateUser")).to eq(true)
+      expect(errors).to be_nil
+      expect(response.to_h).to eq(true)
     end
   end
 
-  context "with incorrect old password" do
-    it "returns error" do
-      variable = {
-        "old_pwd": "BAD",
+  context 'with incorrect old password' do
+    let(:variable) do
+      {
+        "old_pwd": 'BAD',
         "user": {
-          "email": "edited",
-          "name": "edited",
-          "password": "edited",
-          "passwordConfirmation": "edited"
+          "email": 'edited',
+          "name": 'edited',
+          "password": 'edited',
+          "passwordConfirmation": 'edited'
         }
       }
+    end
+    it 'returns error' do
+      response, errors = formatted_response(update_user_query, current_user: user, key: :updateUser, variables: variable)
 
-      result = MiniTwitterSchema.execute(update_user_query, variables: variable,
-                                                            context: { current_user: current_user })
-
-      expect(result["errors"][0]["message"]).to eq("Wrong password!")
+      expect(errors).to_not be_nil
     end
   end
 

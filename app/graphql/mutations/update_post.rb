@@ -1,16 +1,15 @@
-class Mutations::UpdatePost < GraphQL::Schema::Mutation
-  null true
-  argument :post, Types::PostInputType, required: true
-  type Boolean
-  def resolve(post:)
-    return GraphQL::ExecutionError.new("Post not found") unless Post.exists?(id: post[:id],
-                                                                             user_id: context[:current_user][:id])
+# frozen_string_literal: true
 
-    return Post.find(post[:id]).update post.to_h
-  end
+module Mutations
+  class UpdatePost < GraphQL::Schema::Mutation
+    null true
+    argument :post, Types::PostInputType, required: true
+    type Boolean
+    def resolve(post:)
+      return GraphQL::ExecutionError.new('Post not found') unless Post.exists?(id: post[:id],
+                                                                               user_id: context[:current_user][:id])
 
-  # visible only if currently logged in
-  def self.visible?(context)
-    !!context[:current_user]
+      return Post.find(post[:id]).update post.to_h
+    end
   end
 end
