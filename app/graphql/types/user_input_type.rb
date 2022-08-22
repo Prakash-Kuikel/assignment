@@ -7,7 +7,7 @@ module Types
     argument :id, ID, required: false
     argument :email, String, required: false
     argument :name, String, required: false
-    argument :password, String, required: false
-    argument :password_confirmation, String, required: false
+    argument :password, String, required: true
+    argument :password_confirmation, String, required: true
   end
 end

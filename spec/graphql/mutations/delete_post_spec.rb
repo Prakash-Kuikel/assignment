@@ -2,26 +2,30 @@
 
 require 'rails_helper'
 
-describe 'Deleting a post', type: :request do
+describe Mutations::DeletePost do
   let(:user) { create :user }
-  before { sign_in(user) }
-  let(:valid_post) do
-    user.posts.create(body: 'This is a valid post')
-  end
+  let(:post) { create :post, user: user}
 
   context 'with valid PostID' do
     it 'returns true' do
-      variable = { "id": valid_post[:id] }
-      post graphql_path params: { query: delete_post_query, variables: variable }
-      expect(response_body_json.data.deletePost).to eq(true)
+      variable = { id: post[:id] }
+
+      response, errors = formatted_response(delete_post_query, current_user: user, variables: variable,
+                                                               key: :deletePost)
+
+      expect(errors).to be_nil
+      expect(response.to_h).to be(true)
     end
   end
 
   context 'with invalid PostID' do
     it 'returns error' do
-      variable = { "id": 314 }
-      post graphql_path params: { query: delete_post_query, variables: variable }
-      expect(response_body_json.errors[0]['message']).to eq('Post not found')
+      variable = { id: 314 }
+
+      response, errors = formatted_response(delete_post_query, current_user: user, variables: variable,
+                                                               key: :deletePost)
+
+      expect(errors).not_to be_nil
     end
   end
 

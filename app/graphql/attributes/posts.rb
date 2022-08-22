@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Attributes
   class Posts < Types::BaseInputObject
     argument :likes, Integer, required: false

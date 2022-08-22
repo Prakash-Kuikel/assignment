@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-def response_body_json
+def json
   RecursiveOpenStruct.new(
     HashWithIndifferentAccess.new(
       JSON.parse(response.body)

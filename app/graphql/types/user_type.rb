@@ -6,10 +6,9 @@ module Types
     field :name, String, null: true
     field :email, String, null: true
     field :authentication_token, String, null: true
-
     field :posts, [Types::PostType], null: true, description: 'Display all posts of user'
-
     field :followers, [Types::FollowerType], null: true, description: 'Show all followers'
+
     def followers
       Following.where(following_id: object.id).all
     end

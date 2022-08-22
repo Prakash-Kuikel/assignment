@@ -5,20 +5,13 @@ require 'rails_helper'
 RSpec.describe Mutations::CreatePost do
   let(:user) { create :user }
 
-  context 'if logged in' do
+  context 'for logged in user' do
     let(:variable) do
-      {
-        "post":
-          {
-            "body": 'hello'
-          }
-      }
+      { post: { body: 'hello' } }
     end
 
     let(:expected_response) do
-      {
-        "body": 'hello'
-      }
+      { body: 'hello' }
     end
 
     it 'creates post and returns postID' do

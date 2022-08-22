@@ -11,33 +11,37 @@ RSpec.describe Mutations::UpdatePost do
   context 'with valid postID' do
     let(:variable) do
       {
-        "post": {
-          "id": valid_post[:id],
-          "body": 'Updated body'
+        post: {
+          id: valid_post[:id],
+          body: 'Updated body'
         }
       }
     end
+
     it 'returns true' do
-      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost, variables: variable)
+      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost,
+                                                               variables: variable)
 
       expect(errors).to be_nil
-      expect(response.to_h).to eq(true)
+      expect(response.to_h).to be(true)
     end
   end
 
   context 'with invalid userID' do
     let(:variable) do
       {
-        "post": {
-          "id": 431,
-          "body": 'Updated body'
+        post: {
+          id: 431,
+          body: 'Updated body'
         }
       }
     end
-    it 'returns error' do
-      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost, variables: variable)
 
-      expect(errors).to_not be_nil
+    it 'returns error' do
+      response, errors = formatted_response(update_post_query, current_user: user, key: :updatePost,
+                                                               variables: variable)
+
+      expect(errors).not_to be_nil
     end
   end
 
